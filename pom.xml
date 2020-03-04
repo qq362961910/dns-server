@@ -21,6 +21,10 @@
 
     <dependencies>
         <dependency>
+            <groupId>cn.t</groupId>
+            <artifactId>common-util</artifactId>
+        </dependency>
+        <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
             <optional>true</optional>
