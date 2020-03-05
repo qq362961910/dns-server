@@ -7,6 +7,7 @@ import cn.t.server.dnsserver.protocol.Record;
 import cn.t.server.dnsserver.protocol.Request;
 import cn.t.server.dnsserver.protocol.Response;
 import cn.t.server.dnsserver.util.FlagUtil;
+import cn.t.server.dnsserver.util.Ipv4DomainUtil;
 import cn.t.server.dnsserver.util.MessageCodecUtil;
 import cn.t.util.common.StringUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -24,8 +25,6 @@ import java.util.List;
 @Slf4j
 public class InternetIpV4DomainQueryHandler implements MessageHandler {
 
-    private Ipv4DomainHelper ipv4DomainHelper = new Ipv4DomainHelper();
-
     @Override
     public boolean support(Request request) {
         //class: internet && type: A
@@ -36,7 +35,7 @@ public class InternetIpV4DomainQueryHandler implements MessageHandler {
     public Object handler(Request request) throws IOException {
         String domain = request.getDomain();
         //读取配置域名
-        String ip = ipv4DomainHelper.getCustomDomainMapping(domain);
+        String ip = Ipv4DomainUtil.getCustomDomainMapping(domain);
         if(!StringUtil.isEmpty(ip)) {
             log.info("===================================== domain : {} use local dns config, response ip: {} =====================================", domain, ip);
             Response response = new Response();
@@ -48,7 +47,8 @@ public class InternetIpV4DomainQueryHandler implements MessageHandler {
             response.setRecordList(recordList);
             //record
             Record record = new Record();
-            record.setOffset((short)(0xC000 | 12));
+            //todo
+//            record.setOffset((short)(0xC000 | 12));
             record.setRecordType(RecordType.A);
             record.setRecordClass(RecordClass.IN);
             record.setTtl(20);
@@ -84,7 +84,8 @@ public class InternetIpV4DomainQueryHandler implements MessageHandler {
                 for(InetAddress inetAddress: addresses) {
                     if(inetAddress instanceof Inet4Address) {
                         Record record = new Record();
-                        record.setOffset((short)(0xC000 | 12));
+                        //todo
+//                        record.setOffset((short)(0xC000 | 12));
                         record.setRecordType(RecordType.A);
                         record.setRecordClass(RecordClass.IN);
                         record.setTtl(1);
@@ -104,8 +105,7 @@ public class InternetIpV4DomainQueryHandler implements MessageHandler {
                 response.setHeader(header);
                 return response;
             } catch (UnknownHostException e) {
-                log.warn(String.format("本地路由解析域名失败, domain: %s", domain), e);
-                log.info("domain: {} cannot be resolved by local resolver, use 114.114.114.114", domain);
+                log.warn(String.format("本地路由解析域名失败, domain: %s, 即将使用114.114.114.114进行域名解析", domain), e);
                 InetAddress dnsServerAddress = InetAddress.getByName("114.114.114.114");
                 DatagramSocket internetSocket = new DatagramSocket();
                 byte[] data = MessageCodecUtil.encodeRequest(request);
@@ -114,7 +114,7 @@ public class InternetIpV4DomainQueryHandler implements MessageHandler {
                 byte[] receivedData = new byte[512];
                 DatagramPacket internetReceivedPacket = new DatagramPacket(receivedData, receivedData.length);
                 internetSocket.receive(internetReceivedPacket);
-                return Arrays.copyOfRange(receivedData, 0, internetReceivedPacket.getLength())
+                return Arrays.copyOfRange(receivedData, 0, internetReceivedPacket.getLength());
             }
         }
     }

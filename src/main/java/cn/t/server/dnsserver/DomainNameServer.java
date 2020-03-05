@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
@@ -27,8 +28,9 @@ public class DomainNameServer implements Runnable {
                 socket.receive(packet);
                 InetAddress inetAddress = packet.getAddress();
                 int port = packet.getPort();
-                log.info("message from [{}:{}], {}B", inetAddress, port, packet.getLength());
-                ThreadUtil.submitMessageHandleTask(new HandleMessageTask(Arrays.copyOfRange(buffer, 0, packet.getLength())));
+                byte[] content = Arrays.copyOfRange(buffer, 0, packet.getLength());
+                log.info("message from [{}:{}], {}B", inetAddress, port, content.length);
+                ThreadUtil.submitMessageHandleTask(new HandleMessageTask(socket, ByteBuffer.wrap(content), inetAddress, port));
             }
         } catch (IOException e) {
             log.error("", e);
