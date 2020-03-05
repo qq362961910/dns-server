@@ -142,6 +142,7 @@ public final class MessageCodecUtil {
         buffer.putShort((short)0);
         //6.additional count(固定写0)
         buffer.putShort((short)0);
+        int offset = buffer.position();
         //7.query body
         //7.1 domain
         String[] elements = response.getDomain().split("\\.");
@@ -162,7 +163,7 @@ public final class MessageCodecUtil {
         for(Record record: response.getRecordList()) {
             //因为域名字符的限制(最大为63)所以byte字节的高两位始终为00，所以使用高两位使用11表示使用偏移量来表示对应的域名,10和01两种状态被保留(前面内容都是定长，所以偏移量一定是从12开始算起)
             //8.1 offset
-            buffer.putShort((short)(0xC000 | buffer.position()));
+            buffer.putShort((short)(0xC000 | offset));
             //8.2 type
             buffer.putShort(record.getRecordType().value);
             //8.3 class
