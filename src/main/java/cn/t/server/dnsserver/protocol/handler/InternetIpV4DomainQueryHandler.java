@@ -47,8 +47,6 @@ public class InternetIpV4DomainQueryHandler implements MessageHandler {
             response.setRecordList(recordList);
             //record
             Record record = new Record();
-            //todo
-//            record.setOffset((short)(0xC000 | 12));
             record.setRecordType(RecordType.A);
             record.setRecordClass(RecordClass.IN);
             record.setTtl(20);
@@ -72,8 +70,6 @@ public class InternetIpV4DomainQueryHandler implements MessageHandler {
             try {
                 InetAddress[] addresses = InetAddress.getAllByName(domain);
                 log.info("domain: {} resolved by local resolver, record size: {}", domain, addresses.length);
-                //因为域名字符的限制(最大为63)所以byte字节的高两位始终为00，所以使用高两位使用11表示使用偏移量来表示对应的域名,10和01两种状态被保留
-                //前面内容都是定长，所以偏移量一定是从12开始算起
                 Response response = new Response();
                 response.setLabelCount(request.getLabelCount());
                 response.setDomain(domain);
@@ -84,8 +80,6 @@ public class InternetIpV4DomainQueryHandler implements MessageHandler {
                 for(InetAddress inetAddress: addresses) {
                     if(inetAddress instanceof Inet4Address) {
                         Record record = new Record();
-                        //todo
-//                        record.setOffset((short)(0xC000 | 12));
                         record.setRecordType(RecordType.A);
                         record.setRecordClass(RecordClass.IN);
                         record.setTtl(1);
