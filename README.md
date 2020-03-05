@@ -46,7 +46,8 @@ SOA记录表明了DNS服务器之间的关系。SOA记录表明了谁是这个�
 权威DNS服务器　：掌握着二级域名dns服务器的ip和域名的对应关系
 
 
-
+rfc文档
+https://datatracker.ietf.org/doc/html/rfc1035
 
 
 
