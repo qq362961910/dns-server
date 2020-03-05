@@ -38,6 +38,8 @@ public class DomainNameServer implements Runnable {
     }
 
     public static void main(String[] args) {
+        //修改java内置dns服务器地址
+//        SystemPropertiesLoader.loadDefaultProperties();
         new Thread(new DomainNameServer()).start();
     }
 }
