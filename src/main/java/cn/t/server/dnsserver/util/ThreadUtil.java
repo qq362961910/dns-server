@@ -10,7 +10,7 @@ import java.util.concurrent.*;
 
 public class ThreadUtil {
 
-    public static final ScheduledExecutorService scheduledExecutorService =  Executors.newScheduledThreadPool(1);
+    public static final ScheduledExecutorService scheduledExecutorService =  Executors.newScheduledThreadPool(1, new MonitoredThreadFactory(DnsServerMessageHandlerConfig.SCHEDULE_THREAD_POOL_NAME));
 
     public static void submitMessageHandleTask(HandleMessageTask task) {
         Socks5ThreadPoolHolder.MESSAGE_HANDLER_THREAD_POOL_EXECUTOR.submit(task);
