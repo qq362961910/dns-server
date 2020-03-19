@@ -183,6 +183,18 @@ public final class MessageCodecUtil {
                         e.printStackTrace();
                     }
                 }
+            } else if(RecordType.AAAA == record.getRecordType()) {
+                //值为字符串的ip地址
+                buffer.putShort((short)16);
+                String ip = record.getValue();
+                String[] ipElements = ip.split("\\.");
+                for(String part : ipElements) {
+                    try {
+                        buffer.put((byte)Short.parseShort(part));
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+                }
             } else if(RecordType.CNAM == record.getRecordType()) {
                 //值为别名
                 ByteBuffer cnameBuffer = ByteBuffer.allocate(64);

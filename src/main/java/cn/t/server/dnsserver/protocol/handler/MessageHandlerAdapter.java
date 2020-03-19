@@ -59,5 +59,6 @@ public final class MessageHandlerAdapter {
     }
     static {
         messageHandlerList.add(new InternetIpV4DomainQueryHandler());
+        messageHandlerList.add(new InternetIpV6DomainQueryHandler());
     }
 }
