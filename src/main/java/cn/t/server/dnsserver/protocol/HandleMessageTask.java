@@ -2,7 +2,8 @@ package cn.t.server.dnsserver.protocol;
 
 import cn.t.server.dnsserver.protocol.handler.MessageHandlerAdapter;
 import cn.t.server.dnsserver.util.MessageCodecUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -14,8 +15,9 @@ import java.nio.ByteBuffer;
  * @author yj
  * @since 2020-03-04 16:30
  **/
-@Slf4j
 public class HandleMessageTask implements Runnable {
+
+    private static final Logger logger = LoggerFactory.getLogger(HandleMessageTask.class);
 
     private DatagramSocket serverDatagramSocket;
     private final ByteBuffer byteBuffer;
@@ -29,7 +31,7 @@ public class HandleMessageTask implements Runnable {
             try {
                 MessageHandlerAdapter.handle(request, serverDatagramSocket, sourceINetAddress, sourcePort);
             } catch (IOException e) {
-                log.error("", e);
+                logger.error("", e);
             }
         }
     }

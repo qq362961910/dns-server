@@ -10,10 +10,13 @@ import cn.t.server.dnsserver.util.FlagUtil;
 import cn.t.server.dnsserver.util.Ipv4DomainUtil;
 import cn.t.server.dnsserver.util.MessageCodecUtil;
 import cn.t.util.common.StringUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.net.*;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,8 +25,9 @@ import java.util.List;
  * @author yj
  * @since 2020-01-01 11:37
  **/
-@Slf4j
 public class InternetIpV6DomainQueryHandler implements MessageHandler {
+
+    private static final Logger logger = LoggerFactory.getLogger(InternetIpV6DomainQueryHandler.class);
 
     @Override
     public boolean support(Request request) {
@@ -37,7 +41,7 @@ public class InternetIpV6DomainQueryHandler implements MessageHandler {
         //读取配置域名
         String ip = Ipv4DomainUtil.getCustomDomainMapping(domain);
         if(!StringUtil.isEmpty(ip)) {
-            log.info("===================================== domain : {} use local dns config, response ip: {} =====================================", domain, ip);
+            logger.info("===================================== domain : {} use local dns config, response ip: {} =====================================", domain, ip);
             Response response = new Response();
             response.setLabelCount(request.getLabelCount());
             response.setDomain(domain);
@@ -65,7 +69,7 @@ public class InternetIpV6DomainQueryHandler implements MessageHandler {
             response.setHeader(header);
             return response;
         } else {
-            log.info(String.format("本地路由解析域名失败, domain: %s, 即将使用114.114.114.114进行域名解析", domain));
+            logger.info(String.format("本地路由解析域名失败, domain: %s, 即将使用114.114.114.114进行域名解析", domain));
             InetAddress dnsServerAddress = InetAddress.getByName("114.114.114.114");
             DatagramSocket internetSocket = new DatagramSocket();
             byte[] data = MessageCodecUtil.encodeRequest(request);

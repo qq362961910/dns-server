@@ -8,7 +8,8 @@ import cn.t.server.dnsserver.protocol.Record;
 import cn.t.server.dnsserver.protocol.Request;
 import cn.t.server.dnsserver.protocol.Response;
 import cn.t.util.common.CollectionUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.nio.ByteBuffer;
 
@@ -18,8 +19,9 @@ import java.nio.ByteBuffer;
  * @author yj
  * @since 2020-03-04 17:02
  **/
-@Slf4j
 public final class MessageCodecUtil {
+
+    private static final Logger logger = LoggerFactory.getLogger(MessageCodecUtil.class);
 
     /**
      * request解码
@@ -80,7 +82,7 @@ public final class MessageCodecUtil {
             request.setClazz(RecordClass.getRecordClass(clazz));
             return request;
         } else {
-            log.warn("query domain count is 0");
+            logger.warn("query domain count is 0");
             return null;
         }
     }

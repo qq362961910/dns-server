@@ -1,7 +1,5 @@
 package cn.t.server.dnsserver.protocol;
 
-import lombok.Data;
-
 /**
  * @author yj
  * @since 2019-12-31 20:56
@@ -37,7 +35,6 @@ import lombok.Data;
  * 4、服务器返回TCP DNS响应。
  **/
 
-@Data
 public class Header {
 
     /* 会话标识（2字节）*/
@@ -52,4 +49,53 @@ public class Header {
     private short authoritativeNameServerCount;
     /* additional records（2字节）*/
     private short additionalRecordsCount;
+
+
+    public short getTransID() {
+        return transID;
+    }
+
+    public void setTransID(short transID) {
+        this.transID = transID;
+    }
+
+    public short getFlags() {
+        return flags;
+    }
+
+    public void setFlags(short flags) {
+        this.flags = flags;
+    }
+
+    public short getQueryDomainCount() {
+        return queryDomainCount;
+    }
+
+    public void setQueryDomainCount(short queryDomainCount) {
+        this.queryDomainCount = queryDomainCount;
+    }
+
+    public short getAnswerCount() {
+        return answerCount;
+    }
+
+    public void setAnswerCount(short answerCount) {
+        this.answerCount = answerCount;
+    }
+
+    public short getAuthoritativeNameServerCount() {
+        return authoritativeNameServerCount;
+    }
+
+    public void setAuthoritativeNameServerCount(short authoritativeNameServerCount) {
+        this.authoritativeNameServerCount = authoritativeNameServerCount;
+    }
+
+    public short getAdditionalRecordsCount() {
+        return additionalRecordsCount;
+    }
+
+    public void setAdditionalRecordsCount(short additionalRecordsCount) {
+        this.additionalRecordsCount = additionalRecordsCount;
+    }
 }

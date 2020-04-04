@@ -3,7 +3,8 @@ package cn.t.server.dnsserver.protocol.handler;
 import cn.t.server.dnsserver.protocol.Request;
 import cn.t.server.dnsserver.protocol.Response;
 import cn.t.server.dnsserver.util.MessageCodecUtil;
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -18,8 +19,10 @@ import java.util.List;
  * @author yj
  * @since 2020-03-04 17:37
  **/
-@Slf4j
 public final class MessageHandlerAdapter {
+
+    private static final Logger logger = LoggerFactory.getLogger(MessageHandlerAdapter.class);
+
     private static final List<MessageHandler> messageHandlerList = new ArrayList<>();
 
     public static void handle(Request request, DatagramSocket serverDatagramSocket, InetAddress sourceINetAddress, int sourcePort) throws IOException {
@@ -40,13 +43,13 @@ public final class MessageHandlerAdapter {
                     packet.setPort(sourcePort);
                     serverDatagramSocket.send(packet);
                 } else {
-                    log.warn("未实现的编码类型: {}", result.getClass().getName());
+                    logger.warn("未实现的编码类型: {}", result.getClass().getName());
                 }
             } else {
-                log.info("消息处理结果返回值为空, 忽略");
+                logger.info("消息处理结果返回值为空, 忽略");
             }
         } else {
-            log.warn("未能处理的消息: {}", request);
+            logger.warn("未能处理的消息: {}", request);
         }
     }
     private static MessageHandler selectMessageHandler(Request request) {

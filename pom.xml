@@ -31,11 +31,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
+            <version>1.2.3</version>
             <optional>true</optional>
         </dependency>
         <dependency>
@@ -51,7 +47,7 @@
             <dependency>
                 <groupId>cn.t</groupId>
                 <artifactId>util</artifactId>
-                <version>1.0.7-SNAPSHOT</version>
+                <version>1.1.0-SNAPSHOT</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -71,4 +67,23 @@
             </resource>
         </resources>
     </build>
+
+    <repositories>
+        <repository>
+            <id>central</id>
+            <name>central</name>
+            <url>http://repo1.maven.org/maven2/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
+            <id>nexus</id>
+            <name>nexus</name>
+            <url>https://oss.sonatype.org/content/groups/public/</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
 </project>
